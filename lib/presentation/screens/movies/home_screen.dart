@@ -31,12 +31,18 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatePlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingPlayingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowProvider = ref.watch(moviesSlideshowProvider);
+    final popularMovies = ref.watch(popularPlayingMoviesProvider);
+    final topRatedMovies = ref.watch(topRatePlayingMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingPlayingMoviesProvider);
 
     return  CustomScrollView(
       slivers: [
@@ -59,22 +65,22 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                 loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
               ),
               MovieHorizontalListview(
-                movies: nowPlayingMovies,
+                movies: upcomingMovies,
                 title: 'Coming Soon',
                 subtitle: 'This Month',
-                loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+                loadNextPage: () => ref.read(upcomingPlayingMoviesProvider.notifier).loadNextPage(),
               ),
               MovieHorizontalListview(
-                movies: nowPlayingMovies,
+                movies: popularMovies,
                 title: 'Popular',
                 //subtitle: 'Monday 20',
-                loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+                loadNextPage: () => ref.read(popularPlayingMoviesProvider.notifier).loadNextPage(),
               ),
               MovieHorizontalListview(
-                movies: nowPlayingMovies,
+                movies: topRatedMovies,
                 title: 'Best Rated',
                 subtitle: 'All Time',
-                loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+                loadNextPage: () => ref.read(topRatePlayingMoviesProvider.notifier).loadNextPage(),
               ),
             ],
           );
