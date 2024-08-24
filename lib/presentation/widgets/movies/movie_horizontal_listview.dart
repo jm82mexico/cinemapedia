@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
   final List<Movie> movies;
@@ -17,27 +18,25 @@ class MovieHorizontalListview extends StatefulWidget {
       this.loadNextPage});
 
   @override
-  State<MovieHorizontalListview> createState() => _MovieHorizontalListviewState();
+  State<MovieHorizontalListview> createState() =>
+      _MovieHorizontalListviewState();
 }
 
 class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
-
   final scrollController = ScrollController();
-
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener((){
-      if(widget.loadNextPage == null) return;
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) return;
 
-      if((scrollController.position.pixels +200) >= scrollController.position.maxScrollExtent){
-
+      if ((scrollController.position.pixels + 200) >=
+          scrollController.position.maxScrollExtent) {
         widget.loadNextPage!();
       }
     });
   }
-
 
   @override
   void dispose() {
@@ -90,15 +89,19 @@ class _Slide extends StatelessWidget {
                 child: Image.network(
                   movie.posterPath,
                   fit: BoxFit.cover,
-                  width: 150 ,
+                  width: 150,
                   loadingBuilder: (context, child, loadingProgress) {
-                    if(loadingProgress != null){
+                    if (loadingProgress != null) {
                       return const Padding(
                         padding: EdgeInsets.all(8),
-                        child: Center(child: CircularProgressIndicator(strokeWidth: 2,)),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        )),
                       );
                     }
-                      return FadeIn(child: child);
+                    return GestureDetector(
+                        onTap: () => context.push('/movie/${movie.id}'), child: FadeIn(child: child));
                   },
                 )),
           ),
@@ -106,27 +109,34 @@ class _Slide extends StatelessWidget {
 
           //* Title
           SizedBox(
-            width: 150,
-            child:Text(
-              movie.title,
-              maxLines: 2,
-              style: textStyle.titleSmall,
-            )
-          ),
+              width: 150,
+              child: Text(
+                movie.title,
+                maxLines: 2,
+                style: textStyle.titleSmall,
+              )),
 
           //* Rating
           SizedBox(
-            width: 150,
-            child:Row(
-              children: [
-                Icon(Icons.star_half_outlined,color: Colors.yellow.shade800),
-                const SizedBox(width: 3,),
-                Text('${movie.voteAverage}',style: textStyle.bodyMedium?.copyWith(color: Colors.yellow.shade800),),
-                const Spacer(),
-                Text(HumanFormats.number(movie.popularity), style: textStyle.bodySmall,)
-              ],
-            )
-          )
+              width: 150,
+              child: Row(
+                children: [
+                  Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                  Text(
+                    '${movie.voteAverage}',
+                    style: textStyle.bodyMedium
+                        ?.copyWith(color: Colors.yellow.shade800),
+                  ),
+                  const Spacer(),
+                  Text(
+                    HumanFormats.number(movie.popularity),
+                    style: textStyle.bodySmall,
+                  )
+                ],
+              ))
         ],
       ),
     );
