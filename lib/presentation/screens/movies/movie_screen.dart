@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/presentation/provider/movies/movie_info_provider.dart';
+import 'package:cinemapedia/presentation/provider/providers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,6 +23,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     super.initState();
     //link to the provider to load the movie
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
