@@ -15,40 +15,44 @@ class CustomAppbar extends ConsumerWidget {
     final titleStyle = Theme.of(context).textTheme.titleLarge;
 
     return SafeArea(
+      bottom: false,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: [
-            Icon(
-              Icons.movie_creation_outlined,
-              color: colors.primary,
-            ),
-            const SizedBox(width: 5),
-            Text(
-              'Cinemapedia',
-              style: titleStyle,
-            ),
-            const Spacer(),
-            IconButton(
-                onPressed: () {
-                  final searchedMovies = ref.read( searchedMoviesProvider );
-                  final searchQuery = ref.read(searchQueryProvider);
-                  showSearch<Movie?>(
-                          query: searchQuery,
-                          context: context,
-                          delegate: SearchMovieDelegate(
-                              initialMovies: searchedMovies,
-                              //Send only the reference to the searchMovies method
-                              searchMovie: ref.read(searchedMoviesProvider.notifier).searchMoviesByQuery
-                              ))
-                      .then((movie) {
-                    if (movie == null) return ;
-                      context.push('/movie/${movie.id}');
-                    }
-                  );
-                },
-                icon: const Icon(Icons.search))
-          ],
+        child: SizedBox(
+          width: double.infinity,
+          child: Row(
+            children: [
+              Icon(
+                Icons.movie_creation_outlined,
+                color: colors.primary,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                'Cinemapedia',
+                style: titleStyle,
+              ),
+              const Spacer(),
+              IconButton(
+                  onPressed: () {
+                    final searchedMovies = ref.read( searchedMoviesProvider );
+                    final searchQuery = ref.read(searchQueryProvider);
+                    showSearch<Movie?>(
+                            query: searchQuery,
+                            context: context,
+                            delegate: SearchMovieDelegate(
+                                initialMovies: searchedMovies,
+                                //Send only the reference to the searchMovies method
+                                searchMovie: ref.read(searchedMoviesProvider.notifier).searchMoviesByQuery
+                                ))
+                        .then((movie) {
+                      if (movie == null) return ;
+                        context.push('/movie/${movie.id}');
+                      }
+                    );
+                  },
+                  icon: const Icon(Icons.search))
+            ],
+          ),
         ),
       ),
     );
