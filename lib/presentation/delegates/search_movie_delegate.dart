@@ -79,7 +79,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
                   infinite: true,
                   child: IconButton(
                       onPressed: () => query = '',
-                      icon: Icon(Icons.refresh_rounded)));
+                      icon: const Icon(Icons.refresh_rounded)));
             }
             return FadeIn(
                 animate: query.isNotEmpty,
